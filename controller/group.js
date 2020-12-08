@@ -1,16 +1,17 @@
+const Group = require('../models/Group');
 /**
  * @desc Get all groups
  * @method GET
  * @route /api/v1/group
  * @access PRIVATE
  */
-exports.getGroups = (req, res, next) => {
-  res.send({
-    status: true,
-    data: {
-      message: 'success from getting all groups',
-    },
-  });
+exports.getGroups = async (req, res, next) => {
+  try {
+    const { count, rows } = await Group.findAndCountAll();
+    res.status(200).json({ success: true, count, data: rows });
+  } catch (error) {
+    next(error);
+  }
 };
 
 /**
@@ -19,13 +20,13 @@ exports.getGroups = (req, res, next) => {
  * @route /api/v1/group/:id
  * @access PRIVATE
  */
-exports.getGroup = (req, res, next) => {
-  res.status(200).json({
-    status: true,
-    data: {
-      message: 'success from getting a single groups',
-    },
-  });
+exports.getGroup = async (req, res, next) => {
+  try {
+    const group = await Group.findByPk(req.params.id);
+    res.status(200).json({ success: true, data: group });
+  } catch (error) {
+    next(error);
+  }
 };
 
 /**
@@ -34,13 +35,13 @@ exports.getGroup = (req, res, next) => {
  * @route /api/v1/group
  * @access PRIVATE
  */
-exports.createGroup = (req, res, next) => {
-  res.status(200).json({
-    status: true,
-    data: {
-      message: 'success from getting creating groups',
-    },
-  });
+exports.createGroup = async (req, res, next) => {
+  try {
+    const group = await Group.create(req.body);
+    res.status(201).json({ successs: true, data: group });
+  } catch (error) {
+    next(error);
+  }
 };
 
 /**
@@ -49,7 +50,7 @@ exports.createGroup = (req, res, next) => {
  * @route /api/v1/group/:id
  * @access PRIVATE
  */
-exports.updateGroup = (req, res, next) => {
+exports.updateGroup = async (req, res, next) => {
   res.status(200).json({
     status: true,
     data: {
@@ -64,7 +65,7 @@ exports.updateGroup = (req, res, next) => {
  * @route /api/v1/group/:id
  * @access PRIVATE
  */
-exports.deleteGroup = (req, res, next) => {
+exports.deleteGroup = async (req, res, next) => {
   res.status(200).json({
     status: true,
     data: {
