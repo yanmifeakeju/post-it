@@ -1,18 +1,16 @@
 const Group = require('../models/Group');
+const asyncHandler = require('../utils/asyncHandler');
+
 /**
  * @desc Get all groups
  * @method GET
  * @route /api/v1/group
  * @access PRIVATE
  */
-exports.getGroups = async (req, res, next) => {
-  try {
-    const { count, rows } = await Group.findAndCountAll();
-    res.status(200).json({ success: true, count, data: rows });
-  } catch (error) {
-    next(error);
-  }
-};
+exports.getGroups = asyncHandler(async (req, res, next) => {
+  const { count, rows } = await Group.findAndCountAll();
+  res.status(200).json({ success: true, count, data: rows });
+});
 
 /**
  * @desc Get a group by id
@@ -20,14 +18,10 @@ exports.getGroups = async (req, res, next) => {
  * @route /api/v1/group/:id
  * @access PRIVATE
  */
-exports.getGroup = async (req, res, next) => {
-  try {
-    const group = await Group.findByPk(req.params.id);
-    res.status(200).json({ success: true, data: group });
-  } catch (error) {
-    next(error);
-  }
-};
+exports.getGroup = asyncHandler(async (req, res, next) => {
+  const group = await Group.findByPk(req.params.id);
+  res.status(200).json({ success: true, data: group });
+});
 
 /**
  * @desc create a group
@@ -35,14 +29,10 @@ exports.getGroup = async (req, res, next) => {
  * @route /api/v1/group
  * @access PRIVATE
  */
-exports.createGroup = async (req, res, next) => {
-  try {
-    const group = await Group.create(req.body);
-    res.status(201).json({ successs: true, data: group });
-  } catch (error) {
-    next(error);
-  }
-};
+exports.createGroup = asyncHandler(async (req, res, next) => {
+  const group = await Group.create(req.body);
+  res.status(201).json({ success: true, data: group });
+});
 
 /**
  * @desc update a group by its id
@@ -50,14 +40,16 @@ exports.createGroup = async (req, res, next) => {
  * @route /api/v1/group/:id
  * @access PRIVATE
  */
-exports.updateGroup = async (req, res, next) => {
-  res.status(200).json({
-    status: true,
-    data: {
-      message: 'success from getting updating groups',
+exports.updateGroup = asyncHandler(async (req, res, next) => {
+  const group = await Group.update(req.body, {
+    where: {
+      id: req.params.id,
     },
+    returning: true,
   });
-};
+  console.log(group);
+  res.status(200).json({ sucess: true, data: group[1] });
+});
 
 /**
  * @desc Delete a group by its id
@@ -65,11 +57,11 @@ exports.updateGroup = async (req, res, next) => {
  * @route /api/v1/group/:id
  * @access PRIVATE
  */
-exports.deleteGroup = async (req, res, next) => {
-  res.status(200).json({
-    status: true,
-    data: {
-      message: 'success from deleting groups',
+exports.deleteGroup = asyncHandler(async (req, res, next) => {
+  const group = await Group.destroy({
+    where: {
+      id: req.params.id,
     },
   });
-};
+  res.status(200).json({ sucess: true, data: {} });
+});

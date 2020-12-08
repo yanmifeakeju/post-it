@@ -10,9 +10,11 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 
 const db = require('./database/db');
-const groups = require('./route/group');
+const groups = require('./routes/group');
+const errorHandler = require('./middlware/error');
 
 app.use('/api/v1/group', groups);
+app.use(errorHandler);
 
 const server = app.listen(
   PORT,
