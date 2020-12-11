@@ -12,6 +12,7 @@ app.use(express.json());
 const db = require('./database/db');
 const groups = require('./routes/group');
 const errorHandler = require('./middlware/error');
+const Message = require('./models/Message');
 
 app.use('/api/v1/group', groups);
 app.use(errorHandler);
