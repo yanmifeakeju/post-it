@@ -19,9 +19,4 @@ const sequelize = new Sequelize(
   }
 );
 
-(async () => {
-  await sequelize.authenticate();
-  console.log('Connection has been established successfully.'.bgGreen);
-})();
-
 module.exports = sequelize;

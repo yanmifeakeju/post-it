@@ -1,5 +1,7 @@
-const Group = require('../models/Group');
+const { models } = require('../sequelize');
 const asyncHandler = require('../utils/asyncHandler');
+
+const Group = models.group;
 
 /**
  * @desc Get all groups
