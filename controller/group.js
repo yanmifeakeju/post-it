@@ -1,7 +1,9 @@
-const { models } = require('../sequelize');
+const sequelize = require('../sequelize');
 const asyncHandler = require('../utils/asyncHandler');
 
-const Group = models.group;
+const Group = sequelize.models.group;
+const Post = sequelize.models.post;
+const Member = sequelize.models.member;
 
 /**
  * @desc Get all groups
@@ -32,8 +34,38 @@ exports.getGroup = asyncHandler(async (req, res, next) => {
  * @access PRIVATE
  */
 exports.createGroup = asyncHandler(async (req, res, next) => {
-  const group = await Group.create(req.body);
-  res.status(201).json({ success: true, data: group });
+  const { name, description } = req.body;
+  const owner = req.user.id;
+
+  const result = await sequelize.transaction(async (t) => {
+    const group = await Group.create(
+      {
+        name,
+        description,
+        owner,
+      },
+      { transaction: t }
+    );
+
+    const post = await Post.create(
+      {
+        groupId: group.id,
+      },
+      { transaction: t }
+    );
+
+    const member = await Member.create(
+      {
+        userId: owner,
+        groupId: group.id,
+      },
+      { transaction: t }
+    );
+
+    return group;
+  });
+
+  res.status(201).json({ success: true, data: result });
 });
 
 /**

@@ -15,7 +15,7 @@ const sequelize = require('./sequelize');
 async function assertDatabaseConnectionOk() {
   console.log(`Checking database connection...`);
   try {
-    await sequelize.authenticate();
+    await sequelize.sync();
     console.log('Database connection OK!'.green.inverse);
   } catch (error) {
     console.log('Unable to connect to the database:');

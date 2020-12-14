@@ -1,5 +1,7 @@
 const { models } = require('../sequelize');
 const asyncHandler = require('../utils/asyncHandler');
+const ErrorResponse = require('../utils/errorResponse');
+const bcrypt = require('bcryptjs');
 
 const User = models.user;
 
@@ -16,7 +18,8 @@ exports.create = asyncHandler(async (req, res, next) => {
     email,
     password,
   });
-  res.status(201).json({ success: true, data: user });
+
+  res.status(201).json({ success: true, token: user.getSignedJWTtoken });
 });
 
 /**
@@ -26,6 +29,25 @@ exports.create = asyncHandler(async (req, res, next) => {
  * @access public
  */
 exports.login = asyncHandler(async (req, res, next) => {
-  const group = await Group.findByPk(req.params.id);
-  res.status(200).json({ success: true, data: group });
+  const { email, password } = req.body;
+
+  if (!email || !password)
+    return next(
+      new ErrorResponse(`Please provide valid email and password`, 400)
+    );
+
+  const user = await User.findOne({ where: { email } });
+
+  if (!user) return next(new ErrorResponse(`Invalid credentials`, 401));
+
+  const isMatched = await bcrypt.compare(String(password), user.password);
+
+  if (!isMatched) return next(new ErrorResponse(`Invalid credentials`, 401));
+
+  res.status(200).json({ success: true, token: user.getSignedJWTtoken });
+});
+
+exports.getMe = asyncHandler(async (req, res, next) => {
+  const user = await User.findByPk(req.user.id);
+  res.status(200).json({ success: true, data: user });
 });

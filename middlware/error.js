@@ -10,7 +10,7 @@ const errorHandler = (err, req, res, next) => {
     error = new ErrorResponse('Database Error', 500);
   }
 
-  if ((err.name = 'SequelizeValidationError')) {
+  if (err.name === 'SequelizeValidationError') {
     error = new ErrorResponse('Validation Error', 400);
   }
 
