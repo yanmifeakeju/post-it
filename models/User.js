@@ -15,7 +15,7 @@ module.exports = (sequelize) => {
         validate: {
           // We require usernames to have length of at least 3, and
           // only use letters, numbers and underscores.
-          is: /^\w{5,}$/,
+          is: /^\w{3,}$/,
         },
       },
       email: {
@@ -30,7 +30,7 @@ module.exports = (sequelize) => {
         allowNull: false,
         type: DataTypes.STRING,
         validate: {
-          min: 6,
+          min: 5,
         },
       },
     },

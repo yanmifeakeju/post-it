@@ -4,11 +4,13 @@ const ErrorResponse = require('../utils/errorResponse');
 const bcrypt = require('bcryptjs');
 
 const User = models.user;
+const Group = models.group;
+const Member = models.members;
 
 /**
  * @desc Get all groups
  * @method POST
- * @route /api/v1/user
+ * @route /api/v1/auth/create
  * @access public
  */
 exports.create = asyncHandler(async (req, res, next) => {
@@ -23,9 +25,9 @@ exports.create = asyncHandler(async (req, res, next) => {
 });
 
 /**
- * @desc Get a group by id
+ * @desc Get all groups
  * @method POST
- * @route /api/v1/group/:id
+ * @route /api/v1/auth/login
  * @access public
  */
 exports.login = asyncHandler(async (req, res, next) => {
@@ -47,7 +49,14 @@ exports.login = asyncHandler(async (req, res, next) => {
   res.status(200).json({ success: true, token: user.getSignedJWTtoken });
 });
 
+/**
+ * @desc Get all groups
+ * @method POST
+ * @route /api/v1/auth/me
+ * @access private
+ */
 exports.getMe = asyncHandler(async (req, res, next) => {
   const user = await User.findByPk(req.user.id);
-  res.status(200).json({ success: true, data: user });
+  const groups = await user.getGroups();
+  res.status(200).json({ success: true, data: user, groups });
 });

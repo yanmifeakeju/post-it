@@ -6,7 +6,6 @@ const modelDefiners = [
   require('../models/User'),
   require('../models/Group'),
   require('../models/Message'),
-  require('../models/Post'),
 ];
 
 for (const modelDefiner of modelDefiners) {

@@ -1,3 +1,4 @@
+const sequelize = require('../sequelize');
 const asyncHandler = require('../utils/asyncHandler');
 const ErrorResponse = require('../utils/errorResponse');
 

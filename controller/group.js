@@ -1,9 +1,9 @@
 const sequelize = require('../sequelize');
 const asyncHandler = require('../utils/asyncHandler');
+const ErrorResponse = require('../utils/errorResponse');
 
 const Group = sequelize.models.group;
-const Post = sequelize.models.post;
-const Member = sequelize.models.member;
+const Member = sequelize.models.members;
 
 /**
  * @desc Get all groups
@@ -24,6 +24,8 @@ exports.getGroups = asyncHandler(async (req, res, next) => {
  */
 exports.getGroup = asyncHandler(async (req, res, next) => {
   const group = await Group.findByPk(req.params.id);
+
+  if (!group) return next(new ErrorResponse(`Group cannot be found`, 404));
   res.status(200).json({ success: true, data: group });
 });
 
@@ -43,13 +45,6 @@ exports.createGroup = asyncHandler(async (req, res, next) => {
         name,
         description,
         owner,
-      },
-      { transaction: t }
-    );
-
-    const post = await Post.create(
-      {
-        groupId: group.id,
       },
       { transaction: t }
     );
@@ -82,6 +77,7 @@ exports.updateGroup = asyncHandler(async (req, res, next) => {
     returning: true,
   });
   console.log(group);
+  if (!group[1]) return next(new ErrorResponse(`Group cannot be found`, 404));
   res.status(200).json({ sucess: true, data: group[1] });
 });
 
@@ -97,5 +93,7 @@ exports.deleteGroup = asyncHandler(async (req, res, next) => {
       id: req.params.id,
     },
   });
+
+  if (!group[1]) return next(new ErrorResponse(`Group cannot be found`, 404));
   res.status(200).json({ sucess: true, data: {} });
 });

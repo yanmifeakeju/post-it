@@ -7,17 +7,14 @@ const {
   updateGroup,
   deleteGroup,
 } = require('../controller/group');
-const { protect } = require('../middlware/auth');
-// const messagesRouter = require('./message');
+const messagesRouter = require('./message');
+const userRouter = require('./user');
 
 const router = Router();
-// router.use('/:groupId/messages', messagesRouter);
+router.use('/:groupId/messages', messagesRouter);
+router.use('/:groupId/user/', userRouter);
 
-router.route('/').get(protect, getGroups).post(protect, createGroup);
-router
-  .route('/:id')
-  .get(protect, getGroup)
-  .put(protect, updateGroup)
-  .delete(protect, deleteGroup);
+router.route('/').get(getGroups).post(createGroup);
+router.route('/:id').get(getGroup).put(updateGroup).delete(deleteGroup);
 
 module.exports = router;

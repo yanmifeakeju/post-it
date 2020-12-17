@@ -1,13 +1,13 @@
 function applyExtraSetup(sequelize) {
-  const { user, group, message, post } = sequelize.models;
+  const { user, group, message } = sequelize.models;
 
   user.belongsToMany(group, {
-    through: 'member',
+    through: 'members',
     foreignKey: 'userId',
   });
 
   group.belongsToMany(user, {
-    through: 'member',
+    through: 'members',
     foreignKey: 'groupId',
   });
 
@@ -15,17 +15,17 @@ function applyExtraSetup(sequelize) {
     foreignKey: 'owner',
   });
 
-  message.belongsTo(post, {
-    foreignKey: 'postId',
+  message.belongsTo(group, {
+    foreignKey: 'groupId',
   });
 
   message.belongsTo(user, {
     foreignKey: 'userId',
   });
 
-  post.belongsTo(group, {
-    foreignKey: 'groupId',
-  });
+  // post.belongsTo(group, {
+  //   foreignKey: 'groupId',
+  // });
 }
 
 module.exports = { applyExtraSetup };

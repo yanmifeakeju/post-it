@@ -27,9 +27,10 @@ async function assertDatabaseConnectionOk() {
 const errorHandler = require('./middlware/error');
 const group = require('./routes/group');
 const auth = require('./routes/auth');
+const { protect } = require('./middlware/auth');
 
 app.use('/api/v1/auth', auth);
-app.use('/api/v1/group', group);
+app.use('/api/v1/group', protect, group);
 app.use(errorHandler);
 
 const server = app.listen(PORT, () => {
