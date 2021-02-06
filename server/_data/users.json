@@ -1,0 +1,43 @@
+[
+  {
+    "username": "user_one",
+    "email": "admin@gmail.com",
+    "password": "123456"
+  },
+  {
+    "username": "user_two",
+    "email": "spender@gmail.com",
+    "password": "123456"
+  },
+  {
+    "username": "tayo",
+    "email": "tayo@gmail.com",
+    "password": "123456"
+  },
+  {
+    "username": "user_four",
+    "email": "joshua@gmail.com",
+    "password": "123456"
+  },
+  {
+    "username": "kevin",
+    "email": "kevin@gmail.com",
+    "password": "123456"
+  },
+  {
+    "username": "marywill",
+    "email": "mary@gmail.com",
+    "password": "123456"
+  },
+  {
+    "username": "sasharyan",
+    "email": "sasha@gmail.com",
+    "password": "123456"
+  },
+
+  {
+    "username": "saraKensing",
+    "email": "sara@gmail.com",
+    "password": "123456"
+  }
+]

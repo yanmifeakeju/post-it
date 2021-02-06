@@ -12,10 +12,11 @@ if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 app.use(express.json());
 
 const sequelize = require('./sequelize');
+console.log(sequelize.models);
 async function assertDatabaseConnectionOk() {
-  console.log(`Checking database connection...`);
+  console.log(`Checking database connection...`.bgYellow);
   try {
-    await sequelize.sync();
+    await sequelize.sync({ logging: false });
     console.log('Database connection OK!'.green.inverse);
   } catch (error) {
     console.log('Unable to connect to the database:');

@@ -1,9 +1,8 @@
 const sequelize = require('../sequelize');
 const asyncHandler = require('../utils/asyncHandler');
+const ErrorResponse = require('../utils/errorResponse');
 
 const Group = sequelize.models.group;
-const Post = sequelize.models.post;
-const Member = sequelize.models.member;
 
 /**
  * @desc Get all groups
@@ -24,6 +23,8 @@ exports.getGroups = asyncHandler(async (req, res, next) => {
  */
 exports.getGroup = asyncHandler(async (req, res, next) => {
   const group = await Group.findByPk(req.params.id);
+
+  if (!group) return next(new ErrorResponse(`Group cannot be found`, 404));
   res.status(200).json({ success: true, data: group });
 });
 
@@ -35,37 +36,10 @@ exports.getGroup = asyncHandler(async (req, res, next) => {
  */
 exports.createGroup = asyncHandler(async (req, res, next) => {
   const { name, description } = req.body;
-  const owner = req.user.id;
 
-  const result = await sequelize.transaction(async (t) => {
-    const group = await Group.create(
-      {
-        name,
-        description,
-        owner,
-      },
-      { transaction: t }
-    );
+  const group = await req.user.createGroup({ name, description });
 
-    const post = await Post.create(
-      {
-        groupId: group.id,
-      },
-      { transaction: t }
-    );
-
-    const member = await Member.create(
-      {
-        userId: owner,
-        groupId: group.id,
-      },
-      { transaction: t }
-    );
-
-    return group;
-  });
-
-  res.status(201).json({ success: true, data: result });
+  res.status(201).json({ success: true, data: group });
 });
 
 /**
@@ -82,6 +56,7 @@ exports.updateGroup = asyncHandler(async (req, res, next) => {
     returning: true,
   });
   console.log(group);
+  if (!group[1]) return next(new ErrorResponse(`Group cannot be found`, 404));
   res.status(200).json({ sucess: true, data: group[1] });
 });
 
@@ -97,5 +72,7 @@ exports.deleteGroup = asyncHandler(async (req, res, next) => {
       id: req.params.id,
     },
   });
+
+  if (!group[1]) return next(new ErrorResponse(`Group cannot be found`, 404));
   res.status(200).json({ sucess: true, data: {} });
 });

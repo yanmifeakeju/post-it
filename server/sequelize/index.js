@@ -1,12 +1,11 @@
-const { Sequelize } = require('sequelize');
 const sequelize = require('./db');
 const { applyExtraSetup } = require('./applyExtraSetup');
 
 const modelDefiners = [
   require('../models/User'),
   require('../models/Group'),
+  require('../models/GroupMembers'),
   require('../models/Message'),
-  require('../models/Post'),
 ];
 
 for (const modelDefiner of modelDefiners) {
