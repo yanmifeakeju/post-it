@@ -12,10 +12,11 @@ if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 app.use(express.json());
 
 const sequelize = require('./sequelize');
+console.log(sequelize.models);
 async function assertDatabaseConnectionOk() {
-  console.log(`Checking database connection...`);
+  console.log(`Checking database connection...`.bgYellow);
   try {
-    await sequelize.sync();
+    await sequelize.sync({ logging: false });
     console.log('Database connection OK!'.green.inverse);
   } catch (error) {
     console.log('Unable to connect to the database:');
@@ -27,10 +28,9 @@ async function assertDatabaseConnectionOk() {
 const errorHandler = require('./middlware/error');
 const group = require('./routes/group');
 const auth = require('./routes/auth');
-const { protect } = require('./middlware/auth');
 
 app.use('/api/v1/auth', auth);
-app.use('/api/v1/group', protect, group);
+app.use('/api/v1/group', group);
 app.use(errorHandler);
 
 const server = app.listen(PORT, () => {

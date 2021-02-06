@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  box-sizing: border-box;
+  font-family: 'Lato', sans-serif;
+  position: relative;
+}
+
+section.landing-page {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+.logo-box {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  height: 30rem;
+}
+
+.logo-box img {
+  height: auto;
+  width: 15rem;
+  border-radius: 50%;
+}
+
+section.landing-page > div {
+  width: 50%;
+}
+
+.product {
+  height: 100%;
+  /* background-color: red; */
+  background-image: linear-gradient(
+      to right bottom,
+      hsla(222, 51%, 52%, 1),
+      hsla(222, 51%, 20%, 1)
+    ),
+    url(../img/businessman-2956974_1920.jpg);
+  background-blend-mode: screen;
+  background-size: cover;
+  background-position: center;
+}
+
+.form {
+  background-image: linear-gradient(
+    to right bottom,
+    hsla(222, 51%, 52%, 0.637),
+    #849dd7
+  );
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #f9f9f9;
+}
+
+.form div {
+  width: 35rem;
+  padding-bottom: 1.5rem;
+}
+
+.form div h4 {
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  text-transform: capitalize;
+  font-weight: 500;
+}
+.form div label {
+  display: block;
+  font-size: 1.6rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.form div input {
+  width: 100%;
+  padding: 1.5rem;
+  font-size: 2rem;
+  font-family: 'Lato', san-serif;
+}
+
+.form div button {
+  background-color: #a26402;
+  padding: 1.5rem;
+  width: 100%;
+  outline: none;
+  border: none;
+  border-radius: 3px;
+  color: #fff;
+  font-size: 2rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  margin-top: 1.5rem;
+}
